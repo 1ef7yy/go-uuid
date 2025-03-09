@@ -25,7 +25,6 @@ func main() {
 
 	fmt.Printf("uuidv4 generated: %s\n", uuidv4.String())
 
-
 	uuidv5, err := v5.GenerateUUIDv5(v5.DNSNamespace, []byte("example.com"))
 
 	if err != nil {

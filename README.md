@@ -4,6 +4,6 @@
 TODO:
 - [ ] UUIDv3
 - [x] UUIDv4
-- [ ] UUIDv5
+- [x] UUIDv5
 - [ ] Testing
 

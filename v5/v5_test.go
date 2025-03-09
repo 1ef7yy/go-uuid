@@ -17,8 +17,6 @@ func TestGenerateUUIDv5(t *testing.T) {
 
 	t.Logf("generated uuidv5 URL: %s", uuidv5URL.String())
 
-
-
 	uuidv5OID, err := GenerateUUIDv5(OIDNamespace, []byte("example.com"))
 
 	if err != nil {
