@@ -54,11 +54,28 @@ func GenerateUUIDv1() (types.UUID, error) {
 
 	buf.Grow(16)
 
-	binary.Write(&buf, binary.BigEndian, timeLow)
-	binary.Write(&buf, binary.BigEndian, timeMid)
-	binary.Write(&buf, binary.BigEndian, timeHigh)
-	binary.Write(&buf, binary.BigEndian, clockSeq)
-	binary.Write(&buf, binary.BigEndian, node)
+	// unreadable af
+
+	err = binary.Write(&buf, binary.BigEndian, timeLow)
+	if err != nil {
+		return types.UUID{}, err
+	}
+	err = binary.Write(&buf, binary.BigEndian, timeMid)
+	if err != nil {
+		return types.UUID{}, err
+	}
+	err = binary.Write(&buf, binary.BigEndian, timeHigh)
+	if err != nil {
+		return types.UUID{}, err
+	}
+	err = binary.Write(&buf, binary.BigEndian, clockSeq)
+	if err != nil {
+		return types.UUID{}, err
+	}
+	err = binary.Write(&buf, binary.BigEndian, node)
+	if err != nil {
+		return types.UUID{}, err
+	}
 
 	return types.UUID{
 		Fields: [16]byte(buf.Bytes()),
