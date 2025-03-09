@@ -19,6 +19,7 @@ func GetNode() ([]byte, error) {
 
 	}
 	// if no mac was found
+	// TODO make the multicast mac address thing
 	randomNode := make([]byte, 6)
 	_, err = rand.Read(randomNode)
 

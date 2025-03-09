@@ -3,8 +3,9 @@ package v1
 import (
 	"bytes"
 	"crypto/rand"
-	"fmt"
+	"encoding/binary"
 
+	"github.com/1ef7yy/go-uuid/types"
 	"github.com/1ef7yy/go-uuid/utils/mac"
 	"github.com/1ef7yy/go-uuid/utils/utime"
 )
@@ -24,12 +25,12 @@ import (
 // one char is reserved
 // last 12 chars are the node (MAC)
 
-func GenerateUUIDv1() (string, error) {
+func GenerateUUIDv1() (types.UUID, error) {
 
 	node, err := mac.GetNode()
 
 	if err != nil {
-		return "", err
+		return types.UUID{}, err
 	}
 
 	time := utime.GetUUIDTime()
@@ -39,7 +40,7 @@ func GenerateUUIDv1() (string, error) {
 	seq := make([]byte, 2)
 	_, err = rand.Read(seq)
 	if err != nil {
-		return "", err
+		return types.UUID{}, err
 	}
 
 	clockSeq = uint16(seq[0])<<8 | uint16(seq[1])
@@ -47,20 +48,37 @@ func GenerateUUIDv1() (string, error) {
 	timeLow := uint32(time & 0xffffffff)
 	timeMid := uint16((time >> 32) & 0xffff)
 	timeHigh := uint16((time >> 48) & 0x0fff)
-	timeHigh = timeHigh | 0x1000
+	timeHigh = timeHigh | 0x1000 // set version number
 
 	var buf bytes.Buffer
 
-	buf.Grow(36)
+	buf.Grow(16)
 
-	buf.WriteString(fmt.Sprintf("%08x-", timeLow))
-	buf.WriteString(fmt.Sprintf("%04x-", timeMid))
-	buf.WriteString(fmt.Sprintf("%04x-", timeHigh))
+	// unreadable af
 
-	buf.WriteString(fmt.Sprintf("%04x-", clockSeq))
+	err = binary.Write(&buf, binary.BigEndian, timeLow)
+	if err != nil {
+		return types.UUID{}, err
+	}
+	err = binary.Write(&buf, binary.BigEndian, timeMid)
+	if err != nil {
+		return types.UUID{}, err
+	}
+	err = binary.Write(&buf, binary.BigEndian, timeHigh)
+	if err != nil {
+		return types.UUID{}, err
+	}
+	err = binary.Write(&buf, binary.BigEndian, clockSeq)
+	if err != nil {
+		return types.UUID{}, err
+	}
+	err = binary.Write(&buf, binary.BigEndian, node)
+	if err != nil {
+		return types.UUID{}, err
+	}
 
-	buf.WriteString(fmt.Sprintf("%012x", node))
-
-	return buf.String(), nil
+	return types.UUID{
+		Fields: [16]byte(buf.Bytes()),
+	}, nil
 
 }
