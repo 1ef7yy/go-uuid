@@ -1,13 +1,12 @@
-package v1_test
+package v1
 
 import (
 	"testing"
 
-	v1 "github.com/1ef7yy/go-uuid/v1"
 )
 
 func TestV1Generation(t *testing.T) {
-	uuid, err := v1.GenerateUUIDv1()
+	uuid, err := GenerateUUIDv1()
 
 	if err != nil {
 		t.Errorf("error generating uuidv1: %s", err.Error())

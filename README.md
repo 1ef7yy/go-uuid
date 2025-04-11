@@ -2,8 +2,10 @@
 
 
 TODO:
+- [x] UUIDv1
 - [ ] UUIDv3
 - [x] UUIDv4
 - [x] UUIDv5
-- [ ] Testing
+- [x] UUIDv7
+- [x] Testing
 
