@@ -5,10 +5,8 @@ import (
 	"fmt"
 
 	"github.com/1ef7yy/go-uuid/types"
-	// mrand "math/rand"
 )
 
-// TODO: make standard compliant
 func GenerateUUIDv4() (types.UUID, error) {
 	bytes := make([]byte, 16)
 

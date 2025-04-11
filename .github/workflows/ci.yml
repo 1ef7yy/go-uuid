@@ -33,3 +33,7 @@ jobs:
       with:
         version: v1.60
         args: --timeout=5m
+
+    - name: Testing
+      run: go test -json > TestResults-${{ matrix.go-version }}.json
+
